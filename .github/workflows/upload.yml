@@ -1,0 +1,17 @@
+# Please make sure not abuse it
+name: DownloadAndUpload
+on:
+  gollum
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.1.0
+    - uses: actions/setup-node@v1.4.1
+    - run: |
+        git clone "https://github.com/${GITHUB_REPOSITORY}.wiki.git"
+        wiki=`echo $GITHUB_REPOSITORY | cut -d "/" -f 2`.wiki/Home.md
+        wget `cat $wiki | xargs` --directory-prefix=Download
+        node upload.js
+        
+        
