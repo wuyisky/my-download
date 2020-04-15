@@ -8,8 +8,8 @@
 */
 const process = require("process")
 const fs = require("fs")
-const { createClient } = require("webdav");
 const path = require('path');
+const { createClient } = require("webdav");
 
 
 const username = process.env.dav_username
@@ -21,8 +21,8 @@ const client = createClient(
 );
 var downloadPath = path.join(__dirname, 'Download');
 
-async function uploadFile(path,filename){
-    var buffer = fs.readFileSync(path)
+async function uploadFile(filePath,filename){
+    var buffer = fs.readFileSync(filePath)
     await client.putFileContents(filename, buffer, { overwrite: true });
 }
 
@@ -31,7 +31,6 @@ async function recursivelyUpload(basepath){
         withFileTypes: true
     })
     for (var file of dir){
-        console.log(file)
         var subPath = path.join(basepath, file.name)
         if(file.isDirectory()){
             await recursivelyUpload(subPath)
@@ -43,6 +42,7 @@ async function recursivelyUpload(basepath){
 
 (async () => {
     await recursivelyUpload(downloadPath)
+    console.log(`✨ All file upload to ${davPath}`)
 })();
 
 

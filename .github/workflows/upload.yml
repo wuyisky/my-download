@@ -3,15 +3,21 @@ name: DownloadAndUpload
 on:
   gollum
 jobs:
-  bot:
+  downloading:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2.1.0
     - uses: actions/setup-node@v1.4.1
-    - run: |
+    - name: Prepare your file
+      run: |
         git clone "https://github.com/${GITHUB_REPOSITORY}.wiki.git"
         wiki=`echo $GITHUB_REPOSITORY | cut -d "/" -f 2`.wiki/Home.md
         wget `cat $wiki | xargs` --directory-prefix=Download
-        node upload.js
-        
+        npm i
+        npm start
+      env: 
+        dav_url: ${{ secrets.dav_url }}
+        dav_username: ${{ secrets.dav_username }}
+        dav_password: ${{ secrets.dav_password }}
+      
         
