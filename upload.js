@@ -23,7 +23,7 @@ var downloadPath = path.join(__dirname, 'Download');
 
 async function uploadFile(filePath,filename){
     var buffer = fs.readFileSync(filePath)
-    await client.putFileContents(filename, buffer, { overwrite: true });
+    await client.putFileContents(filename, buffer, { overwrite: true, maxContentLength: 1024 ** 3 });
 }
 
 async function recursivelyUpload(basepath){
@@ -42,7 +42,7 @@ async function recursivelyUpload(basepath){
 
 (async () => {
     await recursivelyUpload(downloadPath)
-    console.log(`✨ All file upload to ${davPath}`)
+    console.log(`✨ All file uploaded`)
 })();
 
 
