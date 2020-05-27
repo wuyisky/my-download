@@ -21,6 +21,12 @@ Fork这个项目, 点击项目workflow并启用
 
 > 建议把编辑Home的页面加入书签 https://github.com/你的账户名/plz-download/wiki/Home/_edit
 
+# Tips 
+本质上使用了wget,所以遇到复杂的下载链接,考虑如下格式书写
+```bash
+"https://github.com/someurl?sig=AOq0QJ8wRA&title=Some%2BThing%2Byour%2Bwanna%2Bdownload" -O Download/文件名
+```
+
 ## 定制指南
-- 下载文件部分 查看[.github\workflows\download.yml](https://github.com/ame-yu/plz-download/blob/master/.github/workflows/upload.yml)
+- 下载文件部分 查看[.github\workflows\download.yml](https://github.com/ame-yu/plz-download/blob/master/.github/workflows/download.yml)
 - 上传文件部分 查看[upload.js](https://github.com/ame-yu/plz-download/blob/master/upload.js)
