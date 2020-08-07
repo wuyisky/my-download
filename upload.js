@@ -1,25 +1,37 @@
 /**
-* 这个文件会把当前执行目录同级的Download全传WebDav
-* 默认覆盖文件，不保留目录结构，全部放同级dav制定目录
+* 这个文件会把当前执行目录同级的download同步到WebDav网盘
+* 默认覆盖文件，不保留目录结构
 * 系统变量
-* @Param dav_url dav地址如https://dav.box.com/dav/download
-* @Param dav_username 
-* @Param dav_password 
+* @Param xxx_url dav地址 如https://dav.box.com/dav/download
+* @Param xxx_username 
+* @Param xxx_password
 */
 const process = require("process")
 const fs = require("fs")
 const path = require('path');
 const { createClient } = require("webdav");
 
+const prefix = process.env.drive?.slice(0,-3).concat("_") || ""
 
-const username = process.env.dav_username
-const password = process.env.dav_password
-const davPath = process.env.dav_url
+const webdavUrl = process.env[prefix + 'url'] || process.env.url
+const webdavUsername = process.env[prefix + 'username'] || process.env.username
+const webdavPassword = process.env[prefix + 'password'] || process.env.password
+
+~function checkSecret(){
+    webdavUrl?? console.error(Error("WebDAV url is null"))
+    webdavUsername?? console.error(Error("WebDAV username is null"))
+    webdavPassword?? console.error(Error("WebDAV password is null"))
+}()
 
 const client = createClient(
-    davPath,{username, password}
+    webdavUrl,
+    {
+        username: webdavUsername,
+        password: webdavPassword,
+    }
 );
-var downloadPath = path.join(__dirname, 'Download');
+
+var downloadPath = path.join(__dirname, 'download');
 
 async function uploadFile(filePath,filename){
     var buffer = fs.readFileSync(filePath)
@@ -44,6 +56,3 @@ async function recursivelyUpload(basepath){
     await recursivelyUpload(downloadPath)
     console.log(`✨ All file uploaded`)
 })();
-
-
-
